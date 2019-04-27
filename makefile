@@ -6,10 +6,17 @@ all:
 shell:
 	python manage.py shell
 
+preview:
+	grip -b
+
 autoformat:
 	autopep8 --in-place --aggressive --aggressive --recursive .
 
 lint:
 	pylint -E **/*.py
 
-.PHONY: all shell
+clean:
+	# Be careful this command may erase the database that's not source versioned.
+	git clean -fdx
+
+.PHONY: all shell preview autoformat lint clean

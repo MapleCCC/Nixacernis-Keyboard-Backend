@@ -8,37 +8,37 @@ Hosted in this repository is the open-sourced backend system under the hood of t
 
 ### Terminology and Common Translations
 
-For maximum compatibility with mainstream academic circle, the following translations are mostly taken reference from Wikipedia pages. Consult [Reference](#reference) to know more.
+For maximum compatibility with mainstream academic circle, the following translations are mostly taken via reference from Wikipedia pages. Consult [Reference](#reference) section to know more.
 
-| Chinese | English | Note |
-| ------- | ------- | ------- |
-| 拼音    | pinyin  |         |
-| 声母    | initial |         |
-| 韵母    | final   |         |
-| 零声母  | zero onset ||
-| 逐序格式 | LUTP | Short for *Line Up to Pick*, a desginated representation of keybaord layouts |
+| Chinese  | English    | Note                                                         |
+| -------- | ---------- | ------------------------------------------------------------ |
+| 拼音     | pinyin     |                                                              |
+| 声母     | initial    |                                                              |
+| 韵母     | final      |                                                              |
+| 零声母   | zero onset |                                                              |
+| 逐序格式 | LUTP       | Short for *Line Up to Pick*, a desginated representation of keybaord layouts |
 
 ### Keyboard Layout Jargon
 
-Nixacernis keyboard has totally 18 keys. For convenience, each of them is binded with a number from 1 to 18.
+Nixacernis keyboard has totally 18 keys. For convenience, each of them is binded with a number from 0 to 17. (0-indexed for convenience in under hood data processing)
 
 ||First Column|Second Column|Third Column|Fourth Column|Fifth Column|Sixth Column|
 |:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-| First Row | 1 | 2 | 3 | 4 | 5 | 6 |
-| Second Row | 7 | 8 | 9 | 10 | 11 | 12 |
-| Third Row | 13 | 14 | 15 | 16 | 17 | 18 |
+| First Row | 0 | 1 | 2 | 3 | 4 | 5 |
+| Second Row | 6 | 7 | 8 | 9 | 10 | 11 |
+| Third Row | 12 | 13 | 14 | 15 | 16 | 17 |
 
 ## API Overview
 
-Note that since the project is still under heavy development, it's very likey that current APIs may undergo dramatic changes in the future. No backward compatibility is promised, and use them to your own risk.
+Note that since the project is still under heavy development, it's very likely that current APIs may undergo dramatic changes in the future. No backward compatibility is promised, and use them to your own risk.
 
 ### Transliteration
 
-Go to `/query/<query_string>` for transliteration.
+Go to `/transliterate/<query_string>` for transliteration.
 
 The format of `<query_string>`, represented as regular expression, is `[1-18](-[1-18])*`.
 
-> For example, if the user consecutively typed keys corresponding to number 1, 3, 8, 3, 11, then a `GET` request is sent to url `<hosted_url>/query/1-3-8-3-11`.
+> For example, if the user consecutively typed keys corresponding to number 1, 3, 8, 3, 11, then a `GET` request is sent to url `<hosted_url>/transliterate/1-3-8-3-11`.
 
 Baed on data past froward, transliteration is conducted in the server side and result is packed in JSON format, routed back to client.
 
@@ -61,15 +61,41 @@ $ pip install django bidict
 ### Get the source code and setup
 
 ```bash
-git clone https://github.com/MapleCCC/Nixacernis-Keyboard-Backend.git
+$ git clone https://github.com/MapleCCC/Nixacernis-Keyboard-Backend.git
 
-cd nixacernis-keyboard-backend/
+$ cd nixacernis-keyboard-backend/
 
-# Set up server at https://localhost:8000
-python manage.py runserver
+# Install dependencies
+$ pip install -r requirements.txt
+
+# Set up initial database
+$
+
+# Set up server at localhost:8000
+$ python manage.py runserver
 ```
 
 Note that the above commands set up only a naive development server as a built-in feature provided by Django. It's not intended for production deployment.
+
+### Dev Tools  & Workflows
+
+```bash
+# To autoformatting .py files under the whole repository
+$ make autoformat
+
+# To check linting errors among all .py files under repository
+$ make lint
+
+# To preview README file via GitHub style rendering
+$ make preview
+
+# To eradicate redundant files for a pristine build state
+# NOTE that this command may erase the database that's not version controlled.
+$ make clean
+
+# To launch a shell for working around
+$ make shell
+```
 
 ## Live instance for having a taste
 
