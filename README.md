@@ -12,9 +12,11 @@ For maximum compatibility with mainstream academic circle, the following transla
 
 | Chinese | English | Note |
 | ------- | ------- | ------- |
+| 拼音    | pinyin  |         |
 | 声母    | initial |         |
 | 韵母    | final   |         |
-| 拼音    | pinyin  |         |
+| 零声母  | zero onset ||
+| 逐序格式 | LUTP | Short for *Line Up to Pick*, a desginated representation of keybaord layouts |
 
 ### Keyboard Layout Jargon
 
@@ -51,6 +53,10 @@ Currently this feature is done by increase the word count by 1 under the hood. F
 ### Prerequisite
 
 Python 3.6 and Django 2.2
+
+```bash
+$ pip install django bidict
+```
 
 ### Get the source code and setup
 
