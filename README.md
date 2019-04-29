@@ -99,7 +99,7 @@ $ make shell
 
 ## Live instance for having a taste
 
-There is a heroku app instance setup for automatic CI and testing. Go to [lorem ipsum](https://) to have a check<!--try-->.
+There is a heroku app instance setup for automatic CI and testing. Go to [https://nixacernis-keyboard-backend.herokuapp.com/](https://nixacernis-keyboard-backend.herokuapp.com/) to have a check<!--try-->.
 
 ## License
 
