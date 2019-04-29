@@ -1,6 +1,8 @@
 MAKEFLAGS += .silent
 
-all:
+all: server
+
+server:
 	python manage.py runserver
 
 shell:
@@ -19,4 +21,4 @@ clean:
 	# Be careful this command may erase the database that's not source versioned.
 	git clean -fdx
 
-.PHONY: all shell preview autoformat lint clean
+.PHONY: all server shell preview autoformat lint clean

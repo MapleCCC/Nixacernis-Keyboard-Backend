@@ -25,7 +25,7 @@ def transliterate(request, raw_key_list):
             pinyin_list.append(key_initials_bidict[key][0])
         else:
             pinyin_list[-1] += key_finals_bidict[key][0]
-    # Example: pinyin_list = ["wa", "wi"]
+    # Example: pinyin_list = ["wa", "wi", "l"]
 
     # TODO: Check pinyin validity
 
@@ -79,7 +79,7 @@ def query_helper(pinyin_list):
 def increment(request, chosen_chinese_word):
     try:
         entry = UserDict.objects.get(pk=chosen_chinese_word)
-    except:
+    except BaseException:
         new_entry = UserDict(
             chinese_word=chosen_chinese_word, pinyin="", count=1)
         new_entry.save()
