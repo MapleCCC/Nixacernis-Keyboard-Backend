@@ -13,7 +13,8 @@ def index(request):
 # OUT: HTTPResponse object containing the candidate word list
 def transliterate(request, raw_key_list):
     # Input preprocessing
-    possible_pinyin_list = translate(raw_key_list)
+    key_list = preprocess(raw_key_list)
+    possible_pinyin_list = translate(key_list)
     # eg. possible_pinyin_list = [['ri','re','ni','ne], ['wa','za']]
 
     num_of_pinyin = len(possible_pinyin_list)

@@ -1,4 +1,4 @@
-__all__ = ['translate', 'query']
+__all__ = ['preprocess', 'translate', 'query']
 
 from itertools import product
 from functools import reduce
@@ -24,8 +24,7 @@ def preprocess(raw_key_list):
     return key_list
 
 
-def translate(raw_key_list):
-    key_list = preprocess(raw_key_list)
+def translate(key_list):
     if len(key_list) == 0:
         return []
     possible_initial = key_initials_dict[key_list[0]]
