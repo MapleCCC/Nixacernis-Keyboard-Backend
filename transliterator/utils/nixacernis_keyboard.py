@@ -4,7 +4,7 @@ from bidict import bidict
 # Otherwise the bidict constructor won't accept.
 ordered_initials_list = (("t"), ("w", "z"), ("zh"), ("h", "p"), ("m", "s"), ("b")) + \
     (("c"), ("r", "n"), ("sh"), ("x"), ("q"), ("k", "j")) + \
-    (("ch"), ("g"), ("l"), ("f"), ("d"), ("y"))
+    (("ch"), ("g"), ("l"), ("f"), ("d", "0"), ("y"))
 ordered_finals_list = (("ong", "er"), ("e"), ("ang, iao"), ("a", "ua"), ("ie"), ("ao", "iong")) + \
     (("iu", "ou"), ("an"), ("en", "in"), ("uan", "uai", "o", "v"), ("ian", "uang"), ("i")) + \
     (("iang", "ui"), ("ei", "un"), ("ai", "ue"),
