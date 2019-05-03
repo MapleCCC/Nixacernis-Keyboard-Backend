@@ -9,6 +9,15 @@ def index(request):
     return HttpResponse("Hello, world. You're at the transliterator index.")
 
 
+def detail(request, chinese_word):
+    result = UserDict.objects.filter(chinese_word=chinese_word)
+    if result.count() == 0:
+        return HttpResponse("No information about %s can be found", chinese_word)
+    else:
+        context = {'result': result}
+        return render(request, 'transliterator/detail.html', context)
+
+
 # IN: request object and a string representing raw_key_list
 # OUT: HTTPResponse object containing the candidate word list
 def transliterate(request, raw_key_list):
@@ -24,9 +33,11 @@ def transliterate(request, raw_key_list):
 
     for i in range(num_of_pinyin):
         candidate_word_list = query(
-            possible_pinyin_list[:i+1]) + candidate_word_list
+            possible_pinyin_list[:i + 1]) + candidate_word_list
 
-    return HttpResponse(",".join(candidate_word_list))
+    context = {'candidate_word_list': candidate_word_list, }
+
+    return render(request, 'transliterator/transliterate.html', context)
 
 
 # FIXME

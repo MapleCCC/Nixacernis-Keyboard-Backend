@@ -1,0 +1,16 @@
+{% if result %}
+<table border=1>
+    <tr>
+        <th>Pinyin</th>
+        <th>Count</th>
+    </tr>
+    {% for entry in result %}
+    <tr>
+        <td>{{ entry.pinyin }}</td>
+        <td>{{ entry.count }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No candidate_word are available.</p>
+{% endif %}

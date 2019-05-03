@@ -1,0 +1,9 @@
+{% if candidate_word_list %}
+<ul>
+    {% for candidate_word in candidate_word_list %}
+    <li><a href="/detail/{{ candidate_word }}">{{ candidate_word }}</a></li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No candidate_word are available.</p>
+{% endif %}
