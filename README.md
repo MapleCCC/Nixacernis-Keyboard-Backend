@@ -36,7 +36,7 @@ Note that since the project is still under heavy development, it's very likely t
 
 Go to `/transliterate/<query_string>` for transliteration.
 
-The format of `<query_string>`, represented as regular expression, is `[0-17](-[0-17])*`.
+The format of `<query_string>`, represented as regular expression, is `[1-18](-[1-18])*`.
 
 > For example, if the user consecutively typed keys corresponding to number 1, 3, 8, 3, 11, then a `GET` request is sent to url `<hosted_url>/transliterate/1-3-8-3-11`.
 
@@ -77,7 +77,7 @@ $ python manage.py runserver
 
 Note that the above commands set up only a naive development server as a built-in feature provided by Django. It's not intended for production deployment.
 
-Instead, use GUNICORN as recommended by Django:
+Instead, use Gunicorn as recommended by Django:
 
 ```bash
 $ gunicorn nixacernis.wsgi

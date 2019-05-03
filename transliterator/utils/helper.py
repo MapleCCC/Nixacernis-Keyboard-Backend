@@ -12,7 +12,7 @@ from .pinyin import pinyin_is_valid
 
 def preprocess(raw_key_list):
     # Example: raw_key_list = "7-4-1-3"
-    key_list = [int(key) for key in raw_key_list.split("-")]
+    key_list = [int(key)-1 for key in raw_key_list.split("-")]
     # Example: key_list = [7, 4, 1, 3]
 
     # TODO: Check input validity
