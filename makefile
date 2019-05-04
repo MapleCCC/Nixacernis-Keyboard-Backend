@@ -17,6 +17,7 @@ autoformat:
 lint:
 	pylint -E **/*.py
 
+# Use with caution!
 clean:
 	# Be careful this command may erase the database that's not source versioned.
 	git clean -fdx

@@ -2,7 +2,7 @@
 
 ## Background and Brief Intro
 
-Hosted in this repository is the open-sourced backend system under the hood of the iOS custom keyboard application [Nixacernis Keyboard](https://github.com/YangXuepei/Nixacernis-Keyboard).
+Hosted in this repository is the open-sourced backend system under the hood of the iOS custom keyboard application [Nixacernis Keyboard](https://github.com/MapleCCC/Nixacernis-Keyboard).
 
 ## Prior Knowledge and Jargons
 
