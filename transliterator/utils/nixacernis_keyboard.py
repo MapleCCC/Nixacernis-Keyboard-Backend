@@ -2,13 +2,12 @@ from bidict import bidict
 
 # Use tuple instead of list, for immutability.
 # Otherwise the bidict constructor won't accept.
-ordered_initials_list = (("t"), ("w", "z"), ("zh"), ("h", "p"), ("m", "s"), ("b")) + \
-    (("c"), ("r", "n"), ("sh"), ("x"), ("q"), ("k", "j")) + \
-    (("ch"), ("g"), ("l"), ("f"), ("d", ""), ("y"))
-ordered_finals_list = (("ong", "er"), ("e"), ("ang, iao"), ("a", "ua"), ("ie"), ("ao", "iong")) + \
-    (("iu", "ou"), ("an"), ("en", "in"), ("uan", "uai", "o", "v"), ("ian", "uang"), ("i")) + \
-    (("iang", "ui"), ("ei", "un"), ("ai", "ue"),
-     ("ia", "uo"), ("u"), ("ing", "eng"))
+ordered_initials_list = (("v", "x"), ("h", "p"), ("d"), ("w", "z"), ("t"), ("r", "n")) + \
+    (("c"), ("l"), ("b"), ("y"), ("sh"), ("ch")) + \
+    (("f"), ("q", ""), ("zh"), ("g"), ("j", "k"), ("m", "s"))
+ordered_finals_list = (("uan", "uai", "o"), ("a", "ua"), ("u"), ("e"), ("er", "ong"), ("an")) + \
+    (("iu", "ou"), ("ai", "ue"), ("ao", "iong"), ("ing", "eng"), ("en", "in"), ("iang", "ui")) + \
+    (("ia", "uo"), ("ian", "uang"), ("ang", "iao"), ("ei", "un"), ("i"), ("ie"))
 
 key_initials_dict = {k: v for k, v in enumerate(ordered_initials_list)}
 key_finals_dict = {k: v for k, v in enumerate(ordered_finals_list)}
