@@ -1,10 +1,9 @@
 from django.db import models
 
+
 # Unfortunately, Django currently doesn't support multi-column primary key.
 # A workaround is to add an aditional 'id' column as primary key,
 # and add a UNIQUE constraint.
-
-
 class AbstrDict(models.Model):
     chinese_word = models.CharField(max_length=100)
     pinyin = models.CharField(max_length=250)
@@ -22,6 +21,7 @@ class AbstrDict(models.Model):
 # class BaseDict(AbstrDict):
 #     class Meta(AbstrDict.Meta):
 #         db_table = "base_dict"
+
 
 # class SingleCharDict(AbstrDict):
 #     class Meta(AbstrDict.Meta):

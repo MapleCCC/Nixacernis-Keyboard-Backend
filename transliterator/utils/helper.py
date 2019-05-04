@@ -6,7 +6,7 @@ from functools import reduce
 from django.db.models import Q
 from ..models import UserDict
 
-from .nixacernis_keyboard import *
+from .nixacernis_keyboard import key_initials_dict, key_finals_dict
 from .pinyin import pinyin_is_valid
 
 
