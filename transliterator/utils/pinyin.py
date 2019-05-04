@@ -1,4 +1,6 @@
 # -*- coding:utf-8 -*-#
+__all__ = ['pinyin_is_valid']
+
 from enum import Enum
 import os
 
@@ -29,6 +31,3 @@ def pinyin_is_valid(string):
 #         self.final = final
 
 #     def is_valid(self):
-
-
-__all__ = ['pinyin_is_valid']
