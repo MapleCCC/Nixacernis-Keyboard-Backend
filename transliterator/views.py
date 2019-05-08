@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .models import UserDict
 
-from .utils.helper import preprocess, translate, query
+from .utils.transliterate_helper import preprocess, translate, query
 from .utils.pinyin import word_to_pinyin
 
 
@@ -40,9 +40,15 @@ def transliterate(request, raw_key_list):
             possible_pinyin_list[:i + 1]) + candidate_word_list
     # Example: candidate_word_list = ['你好', '日抛', '你', '腻', '泥']
 
+    return HttpResponse(",".join(candidate_word_list))
+
+
+def demo(request, raw_key_list):
+    response = transliterate(request, raw_key_list)
+    candidate_word_list = response.content.decode('utf-8').split(',')
     context = {'candidate_word_list': candidate_word_list, }
 
-    return render(request, 'transliterator/transliterate.html', context)
+    return render(request, 'transliterator/demo.html', context)
 
 
 def increment(request, chinese_word):
