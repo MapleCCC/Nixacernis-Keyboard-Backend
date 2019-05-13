@@ -25,6 +25,17 @@ key_finals_bidict = bidict(key_finals_dict)
 initials_key_dict = key_initials_bidict.inverse
 finals_key_dict = key_finals_bidict.inverse
 
+translation_lookup_table = {}
+for i in range(18):
+    for j in range(18):
+        index = "%d,%d" % (i, j)
+        possible_initial = key_initials_dict[i]
+        possible_final = key_finals_dict[j]
+        possible_pinyins = [
+            x[0]+x[1] for x in product(possible_initial, possible_final) if pinyin_is_valid(x[0]+x[1])]
+        # Example: possible_first_pinyin = ["wa", "wi"]
+        translation_lookup_table[index] = possible_pinyins
+
 
 # IN: A list of keys.
 #   eg, [7, 4, 1, 3]
@@ -42,10 +53,8 @@ def translate(key_list):
 
     # check input validity
 
-    possible_initial = key_initials_dict[key_for_initial]
-    possible_final = key_finals_dict[key_for_final]
-    possible_first_pinyin = [
-        x[0]+x[1] for x in product(possible_initial, possible_final) if pinyin_is_valid(x[0]+x[1])]
-    # Example: possible_first_pinyin = ["wa", "wi"]
+    index = str(key_for_initial) + ',' + str(key_for_final)
+
+    possible_first_pinyin = translation_lookup_table[index]
 
     return [possible_first_pinyin] + translate(key_list[2:])
