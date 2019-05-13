@@ -21,6 +21,8 @@ def detail(request, chinese_word):
         return render(request, 'transliterator/detail.html', context)
 
 
+# TODO: 测试一下加入cache mechanism之后的query速度是否加快了
+
 # IN: request object and a string representing raw_key_list
 # OUT: HTTPResponse object containing the candidate word list
 def transliterate_request_handler(request, raw_key_list):

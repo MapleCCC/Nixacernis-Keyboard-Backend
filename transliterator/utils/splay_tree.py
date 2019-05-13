@@ -1,5 +1,7 @@
 __all__ = ['SplayTree']
 
+from .splay_tree_impl import SplayTree
+
 
 class SplayTreeStub:
     def __init__(self):
@@ -19,5 +21,5 @@ class SplayTreeStub:
         pass
 
 
-class SplayTree(SplayTreeStub):
-    pass
+# class SplayTree(SplayTreeStub):
+#     pass
