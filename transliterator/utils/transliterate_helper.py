@@ -1,44 +1,62 @@
-__all__ = ['preprocess', 'translate', 'query']
+__all__ = ['transliterate_helper']
 
 from itertools import product
 from functools import reduce
 
+# import pysnooper
+# import os
+
 from django.db.models import Q
 from ..models import UserDict
 
-from .nixacernis_keyboard import key_initials_dict, key_finals_dict
+from .nixacernis_keyboard import translate
 from .pinyin import pinyin_is_valid
+from .transliterate_cache import TransliterateCache
 
 
-def preprocess(raw_key_list):
-    # Example: raw_key_list = "7-4-1-3"
-    key_list = [int(key)-1 for key in raw_key_list.split("-")]
-    # Example: key_list = [7, 4, 1, 3]
-
-    # TODO: Check input validity
-
-    # normalize pinyin_list, remove dangling initials
-    if len(key_list) % 2 != 0:
-        key_list = key_list[:-1]
-
-    return key_list
+# TODO: Does Python have any reserved keywords for declaring global varibales? To prevent multiple inclusion.
+transliterate_cache = TransliterateCache()
 
 
-def translate(key_list):
-    if len(key_list) == 0:
+def transliterate_helper(key_list):
+    candidate_word_list = transliterate(key_list)
+    transliterate_cache.store(key_list, candidate_word_list)
+    return candidate_word_list
+
+
+# IN: A list of keys.
+#   eg, [7, 4, 1, 3]
+# OUT: A list of candidate words.
+#   eg, ['你好', '日抛', '你', '腻', '泥']
+# @pysnooper.snoop(os.path.join(os.path.dirname(__file__), 'transliterate.log'))
+def transliterate(key_list):
+    if key_list == []:
         return []
-    possible_initial = key_initials_dict[key_list[0]]
-    possible_final = key_finals_dict[key_list[1]]
-    possible_first_pinyin = [
-        x[0]+x[1] for x in product(possible_initial, possible_final) if pinyin_is_valid(x[0]+x[1])]
-    # Example: possible_first_pinyin = ["wa", "wi"]
-    return [possible_first_pinyin] + translate(key_list[2:])
+
+    # with transliterate_cache.query(key_list) as result:
+    #     if result != None:
+    #         return result
+    result = transliterate_cache.query(key_list)
+    if result != None:
+        return result
+
+    possible_pinyin_list = translate(key_list)
+    # eg. possible_pinyin_list = [['ri','re','ni','ne], ['wa','za']]
+    candidate_word_list = query(
+        possible_pinyin_list) + transliterate(key_list[:-2])
+
+    return candidate_word_list
 
 
+# IN: A list of possible pinyins.
+#   eg, [['ri','re','ni','ne], ['wa','za']]
+# OUT: A list of candidate words.
+#   eg, ['你好', '日抛']
 def query(possible_pinyin_list):
     Q_objects = [Q(pinyin=",".join(py_list))
                  for py_list in product(*possible_pinyin_list)]
     # eg py_list = ["ni", "hao", "ma"]
-    total_Q = reduce(lambda x, y: x | y, Q_objects)
-    total_queryset = UserDict.objects.filter(total_Q).order_by('-count')
-    return [user_dict.chinese_word for user_dict in total_queryset]
+    merged_Q = reduce(lambda x, y: x | y, Q_objects)
+    queryset = UserDict.objects.filter(merged_Q).order_by('-count')
+
+    return [user_dict.chinese_word for user_dict in queryset]

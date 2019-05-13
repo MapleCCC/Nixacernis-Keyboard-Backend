@@ -1,8 +1,10 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from .models import UserDict
 
-from .utils.transliterate_helper import preprocess, translate, query
+import re
+
+from .utils.transliterate_helper import transliterate_helper
 from .utils.pinyin import word_to_pinyin
 
 
@@ -21,30 +23,26 @@ def detail(request, chinese_word):
 
 # IN: request object and a string representing raw_key_list
 # OUT: HTTPResponse object containing the candidate word list
-def transliterate(request, raw_key_list):
+def transliterate_request_handler(request, raw_key_list):
+    if raw_key_list == '':
+        return HttpResponse('')
+
+    if not input_is_valid(raw_key_list):
+        raise Http404("Input is not valid.")
+
     # Input preprocessing
     # Example: raw_key_list = "7-4-1-3"
     key_list = preprocess(raw_key_list)
     # Example: key_list = [7, 4, 1, 3]
 
-    possible_pinyin_list = translate(key_list)
-    # eg. possible_pinyin_list = [['ri','re','ni','ne], ['wa','za']]
-
-    num_of_pinyin = len(possible_pinyin_list)
-
-    # Now look up for candidate words
-    # Lookup from small string to larger string, for better utilizing Django's database lookup cache feature
-    candidate_word_list = []
-    for i in range(num_of_pinyin):
-        candidate_word_list = query(
-            possible_pinyin_list[:i + 1]) + candidate_word_list
+    candidate_word_list = transliterate_helper(key_list)
     # Example: candidate_word_list = ['你好', '日抛', '你', '腻', '泥']
 
     return HttpResponse(",".join(candidate_word_list))
 
 
 def demo(request, raw_key_list):
-    response = transliterate(request, raw_key_list)
+    response = transliterate_request_handler(request, raw_key_list)
     candidate_word_list = response.content.decode('utf-8').split(',')
     context = {'candidate_word_list': candidate_word_list, }
 
@@ -64,3 +62,24 @@ def increment(request, chinese_word):
             record.count = record.count + 1
             record.save()
         return HttpResponse("Increment succeeded. Word priority has been incremented From %d to %d" % (record.count-1, record.count))
+
+
+def input_is_valid(raw_key_list):
+    return True
+
+
+# IN: "7-4-1-3"
+# OUT: [7, 4, 1, 3]
+def preprocess(raw_key_list):
+    # Tokenize and transform from 1-indexed to 0-indexed
+    # Example: raw_key_list = "7-4-1-3"
+    key_list = [int(key)-1 for key in raw_key_list.split("-")]
+    # Example: key_list = [6, 3, 0, 2]
+
+    # TODO: Check input validity, boundedness
+
+    # normalize pinyin_list, remove dangling initials
+    if len(key_list) % 2 != 0:
+        key_list = key_list[:-1]
+
+    return key_list
