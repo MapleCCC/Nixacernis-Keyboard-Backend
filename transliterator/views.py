@@ -6,6 +6,7 @@ import re
 
 from .utils.transliterate_helper import transliterate_helper
 from .utils.pinyin import word_to_pinyin
+from .utils.nixacernis_keyboard import number_of_key
 
 
 def index(request):
@@ -66,8 +67,15 @@ def increment(request, chinese_word):
         return HttpResponse("Increment succeeded. Word priority has been incremented From %d to %d" % (record.count-1, record.count))
 
 
+# TODO: Change regex from hardcode to format via number_of_pinyin
 def input_is_valid(raw_key_list):
-    return True
+    # regex = '^[1-%(number_of_key)d](-[1-%(number_of_key)d])*$' % {
+    #     'number_of_key': number_of_key}
+    regex = '^([1-9]|1[0-8])(-([1-9]|1[0-8]))*$'
+    if re.match(regex, raw_key_list) == None:
+        return False
+    else:
+        return True
 
 
 # IN: "7-4-1-3"
