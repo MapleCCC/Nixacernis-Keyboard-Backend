@@ -38,9 +38,9 @@ for i in range(18):
 
 
 # IN: A list of keys.
-#   eg, [7, 4, 1, 3]
+#   eg, [5, 16, 1, 8]
 # OUT: A list of possible pinyins.
-#   eg, [['ri','re','ni','ne], ['wa','za']]
+#   eg, [['ri','ni'], ['hao','pao']]
 def translate(key_list):
     if len(key_list) == 0:
         return []
@@ -50,8 +50,6 @@ def translate(key_list):
 
     key_for_initial = key_list[0]
     key_for_final = key_list[1]
-
-    # check input validity
 
     index = str(key_for_initial) + ',' + str(key_for_final)
 

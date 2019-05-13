@@ -17,7 +17,6 @@ class SplaySubTree:
     # INPUT: (key, value) pair
     # Insert the key-value entry into tree, and push it upward while preserving tree balance state.
     # If a node with same key already exists, will cover its content.
-
     def insert(self, key, value):
         if self.is_empty_tree():
             new_node = Node(key, value)
@@ -27,7 +26,6 @@ class SplaySubTree:
             self.splay(key)
 
     # recursive function helper
-
     def insert_helper(self, key, value):
         if key < self.node.key:
             if self.node.left != None:
@@ -55,6 +53,7 @@ class SplaySubTree:
         self.splay(key)
         return self.node.key, self.node.value
 
+    # recursive function helper
     def find_max_key_helper(self):
         if self.node.right == None:
             return self.node.key
@@ -77,7 +76,6 @@ class SplaySubTree:
             return SplaySubTree(self.node.left).find_min_key_helper()
 
     # No return value to indicate if the desired key is found.
-
     def delete(self, key):
         if self.find(key) == None:
             return
@@ -97,7 +95,6 @@ class SplaySubTree:
 
     # INPUT: key
     # OUPUT: matched value or None
-
     def find(self, key):
         if self.is_empty_tree():
             return None
@@ -145,7 +142,6 @@ class SplaySubTree:
         self.zig()
 
     # It's funny that despite the name, zig_zag actually perfroms zig twice.
-
     def zig_zag(self):
         if self.is_empty_tree():
             return
@@ -186,7 +182,6 @@ class SplaySubTree:
     # INPUT: key
     #   Find the node whose key matches input, and push the node upward with tree rotations that preserve balance state.
     # OUTPUT: boolean indicating whether succeed in finding the key
-
     def splay(self, key):
         new_root = self.splay_helper(key)
         if new_root == None:
@@ -209,7 +204,6 @@ class SplaySubTree:
             return self.node
 
     # An ugly workaround
-
     def splay_nearest_key(self, key):
         self.find_max_key()
         itr = self.node
@@ -240,7 +234,6 @@ class SplaySubTree:
     __repr__ = __str__
 
     # An ugly temporary implementation
-
     def __iter__(self):
         self.find_max_key()
         itr = self.node
@@ -260,7 +253,6 @@ class SplaySubTree:
     # Reduce size by half
     # Expensive operation, be cautious to use.
     # In order to do it efficiently, we need to maintain the middle-key.
-
     def cut_by_half(self):
         if self.size == 0:
             return

@@ -25,7 +25,9 @@ def detail(request, chinese_word):
 # TODO: 测试一下加入cache mechanism之后的query速度是否加快了
 
 # IN: request object and a string representing raw_key_list
+#   raw_key_list = "6-17-2-9-18-2"
 # OUT: HTTPResponse object containing the candidate word list
+#   candidate_word_list = "你好吗,你号码,你好,日抛,你,日,匿,泥,腻,迡,逆"
 def transliterate_request_handler(request, raw_key_list):
     if raw_key_list == '':
         return HttpResponse('')
@@ -34,12 +36,12 @@ def transliterate_request_handler(request, raw_key_list):
         raise Http404("Input is not valid.")
 
     # Input preprocessing
-    # Example: raw_key_list = "7-4-1-3"
+    # Example: raw_key_list = "6-17-2-9"
     key_list = preprocess(raw_key_list)
-    # Example: key_list = [7, 4, 1, 3]
+    # Example: key_list = [5, 16, 1, 8]
 
     candidate_word_list = transliterate_helper(key_list)
-    # Example: candidate_word_list = ['你好', '日抛', '你', '腻', '泥']
+    # Example: candidate_word_list = ['你好', '日抛', '你', '日', '匿', '泥', '腻', '迡']
 
     return HttpResponse(",".join(candidate_word_list))
 
@@ -69,8 +71,7 @@ def increment(request, chinese_word):
 
 # TODO: Change regex from hardcode to format via number_of_pinyin
 def input_is_valid(raw_key_list):
-    # regex = '^[1-%(number_of_key)d](-[1-%(number_of_key)d])*$' % {
-    #     'number_of_key': number_of_key}
+    # regex = '^[1-%(number_of_key)d](-[1-%(number_of_key)d])*$' % {'number_of_key': number_of_key}
     regex = '^([1-9]|1[0-8])(-([1-9]|1[0-8]))*$'
     if re.match(regex, raw_key_list) == None:
         return False
@@ -78,15 +79,13 @@ def input_is_valid(raw_key_list):
         return True
 
 
-# IN: "7-4-1-3"
-# OUT: [7, 4, 1, 3]
+# IN: "6-17-2-9"
+# OUT: [5, 16, 1, 8]
 def preprocess(raw_key_list):
     # Tokenize and transform from 1-indexed to 0-indexed
-    # Example: raw_key_list = "7-4-1-3"
+    # Example: raw_key_list = "6-17-2-9"
     key_list = [int(key)-1 for key in raw_key_list.split("-")]
-    # Example: key_list = [6, 3, 0, 2]
-
-    # TODO: Check input validity, boundedness
+    # Example: key_list = [5, 16, 1, 8]
 
     # normalize pinyin_list, remove dangling initials
     if len(key_list) % 2 != 0:

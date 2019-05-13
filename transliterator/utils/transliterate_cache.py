@@ -4,7 +4,7 @@ from .splay_tree import SplayTree
 
 
 def hash(key_list):
-    # return "-".join(key_list)
+    # return "-".join([str(key) for key in key_list])
     return tuple(key_list)
 
 

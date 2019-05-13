@@ -3,9 +3,6 @@ __all__ = ['transliterate_helper']
 from itertools import product
 from functools import reduce
 
-# import pysnooper
-# import os
-
 from django.db.models import Q
 from ..models import UserDict
 
@@ -25,23 +22,19 @@ def transliterate_helper(key_list):
 
 
 # IN: A list of keys.
-#   eg, [7, 4, 1, 3]
+#   eg, [5, 16, 1, 8]
 # OUT: A list of candidate words.
-#   eg, ['你好', '日抛', '你', '腻', '泥']
-# @pysnooper.snoop(os.path.join(os.path.dirname(__file__), 'transliterate.log'))
+#   eg, ['你好','日抛','你','日','匿','泥']
 def transliterate(key_list):
     if key_list == []:
         return []
 
-    # with transliterate_cache.query(key_list) as result:
-    #     if result != None:
-    #         return result
     result = transliterate_cache.query(key_list)
     if result != None:
         return result
 
     possible_pinyin_list = translate(key_list)
-    # eg. possible_pinyin_list = [['ri','re','ni','ne], ['wa','za']]
+    # eg. possible_pinyin_list = [['ri', 'ni'], ['hao','pao']]
     candidate_word_list = query(
         possible_pinyin_list) + transliterate(key_list[:-2])
 
@@ -49,9 +42,9 @@ def transliterate(key_list):
 
 
 # IN: A list of possible pinyins.
-#   eg, [['ri','re','ni','ne], ['wa','za']]
+#   eg, [['ri','ni'], ['hao','pao']]
 # OUT: A list of candidate words.
-#   eg, ['你好', '日抛']
+#   eg, ['你好','日抛','你','日','匿','泥']
 def query(possible_pinyin_list):
     Q_objects = [Q(pinyin=",".join(py_list))
                  for py_list in product(*possible_pinyin_list)]
