@@ -22,7 +22,7 @@ def detail(request, chinese_word):
         return render(request, 'transliterator/detail.html', context)
 
 
-# TODO: 测试一下加入cache mechanism之后的query速度是否加快了
+# TODO: 测试一下加入cache mechanism之后的query速度是否加快了。benchmark, profiler.
 
 # IN: request object and a string representing raw_key_list
 #   raw_key_list = "6-17-2-9-18-2"
@@ -40,10 +40,10 @@ def transliterate_request_handler(request, raw_key_list, offset=0):
 
     # Input preprocessing
     # Example: raw_key_list = "6-17-2-9"
-    key_list = preprocess(raw_key_list)
-    # Example: key_list = [5, 16, 1, 8]
+    keys = preprocess(raw_key_list)
+    # Example: keys = (5, 16, 1, 8)
 
-    candidate_word_list = transliterate_helper(key_list, offset)
+    candidate_word_list = transliterate_helper(keys, offset)
     # Example: candidate_word_list = ['你好', '日抛', '你', '日', '匿', '泥', '腻', '迡']
 
     return HttpResponse(",".join(candidate_word_list))
@@ -83,15 +83,15 @@ def input_is_valid(raw_key_list):
 
 
 # IN: "6-17-2-9"
-# OUT: [5, 16, 1, 8]
+# OUT: (5, 16, 1, 8)
 def preprocess(raw_key_list):
     # Tokenize and transform from 1-indexed to 0-indexed
     # Example: raw_key_list = "6-17-2-9"
-    key_list = [int(key)-1 for key in raw_key_list.split("-")]
-    # Example: key_list = [5, 16, 1, 8]
+    keys = tuple(int(key)-1 for key in raw_key_list.split("-"))
+    # Example: keys = (5, 16, 1, 8)
 
     # normalize pinyin_list, remove dangling initials
-    if len(key_list) % 2 != 0:
-        key_list = key_list[:-1]
+    if len(keys) % 2 != 0:
+        keys = keys[:-1]
 
-    return key_list
+    return keys
