@@ -4,9 +4,13 @@ from .models import UserDict
 
 import re
 
-from .utils.transliterate_helper import transliterate_helper
+from .utils.transliterate_helper import transliterate
 from .utils.pinyin import word_to_pinyin
 from .utils.nixacernis_keyboard import number_of_key
+
+
+# The maximum payload restriction for performance.
+MAX_CANDIDATES_PAYLOAD = 20
 
 
 def index(request):
@@ -43,10 +47,11 @@ def transliterate_request_handler(request, raw_key_list, offset=0):
     keys = preprocess(raw_key_list)
     # Example: keys = (5, 16, 1, 8)
 
-    candidate_word_list = transliterate_helper(keys, offset)
+    candidate_word_list = transliterate(keys)
     # Example: candidate_word_list = ['你好', '日抛', '你', '日', '匿', '泥', '腻', '迡']
+    payload = candidate_word_list[offset:offset+MAX_CANDIDATES_PAYLOAD]
 
-    return HttpResponse(",".join(candidate_word_list))
+    return HttpResponse(",".join(payload))
 
 
 def demo(request, raw_key_list, offset=0):

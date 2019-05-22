@@ -8,7 +8,7 @@ from itertools import product
 
 all_pinyin = ()
 all_pinyin_file_path = os.path.join(
-    os.path.dirname(__file__), 'all_pinyin.txt')
+    os.path.dirname(__file__), 'data', 'all_pinyin.txt')
 with open(all_pinyin_file_path, 'r', encoding="utf-8") as f:
     for line in f.readlines():
         all_pinyin += (line[:-1],)
@@ -22,7 +22,7 @@ def pinyin_is_valid(string):
 # OUT: A set of possible pinyins for the chinese character
 char_to_pinyin = {}
 char_to_pinyin_file_path = os.path.join(
-    os.path.dirname(__file__), 'Chara.txt')
+    os.path.dirname(__file__), 'data', 'Chara.txt')
 with open(char_to_pinyin_file_path, 'r', encoding='utf-8') as f:
     for line in f.readlines():
         tokens = line.split(' ')

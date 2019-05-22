@@ -1,4 +1,4 @@
-__all__ = ['transliterate_helper']
+__all__ = ['transliterate']
 
 from itertools import product
 from functools import reduce, lru_cache
@@ -8,16 +8,6 @@ from ..models import UserDict
 
 from .nixacernis_keyboard import translate
 from .pinyin import pinyin_is_valid
-
-
-# The maximum payload restriction for performance.
-CANDIDATES_PAYLOAD = 20
-
-
-def transliterate_helper(keys, offset=0):
-    candidate_word_list = transliterate(keys)
-
-    return candidate_word_list[offset:offset+CANDIDATES_PAYLOAD]
 
 
 # IN: A list of keys.
