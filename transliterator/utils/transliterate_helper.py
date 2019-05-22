@@ -11,14 +11,18 @@ from .pinyin import pinyin_is_valid
 from .transliterate_cache import TransliterateCache
 
 
+# The maximum payload restriction for performance.
+CANDIDATES_PAYLOAD = 20
+
 # TODO: Does Python have any reserved keywords for declaring global varibales? To prevent multiple inclusion.
 transliterate_cache = TransliterateCache()
 
 
-def transliterate_helper(key_list):
+def transliterate_helper(key_list, offset=0):
     candidate_word_list = transliterate(key_list)
     transliterate_cache.store(key_list, candidate_word_list)
-    return candidate_word_list
+
+    return candidate_word_list[offset:offset+CANDIDATES_PAYLOAD]
 
 
 # IN: A list of keys.

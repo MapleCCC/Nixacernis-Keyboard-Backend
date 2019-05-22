@@ -28,26 +28,29 @@ def detail(request, chinese_word):
 #   raw_key_list = "6-17-2-9-18-2"
 # OUT: HTTPResponse object containing the candidate word list
 #   candidate_word_list = "你好吗,你号码,你好,日抛,你,日,匿,泥,腻,迡,逆"
-def transliterate_request_handler(request, raw_key_list):
+def transliterate_request_handler(request, raw_key_list, offset=0):
     if raw_key_list == '':
         return HttpResponse('')
 
     if not input_is_valid(raw_key_list):
         raise Http404("Input is not valid.")
 
+    if not (type(offset) is int and offset >= 0):
+        raise Http404("Offset is not valid.")
+
     # Input preprocessing
     # Example: raw_key_list = "6-17-2-9"
     key_list = preprocess(raw_key_list)
     # Example: key_list = [5, 16, 1, 8]
 
-    candidate_word_list = transliterate_helper(key_list)
+    candidate_word_list = transliterate_helper(key_list, offset)
     # Example: candidate_word_list = ['你好', '日抛', '你', '日', '匿', '泥', '腻', '迡']
 
     return HttpResponse(",".join(candidate_word_list))
 
 
-def demo(request, raw_key_list):
-    response = transliterate_request_handler(request, raw_key_list)
+def demo(request, raw_key_list, offset=0):
+    response = transliterate_request_handler(request, raw_key_list, offset)
     candidate_word_list = response.content.decode('utf-8').split(',')
     context = {'candidate_word_list': candidate_word_list, }
 
