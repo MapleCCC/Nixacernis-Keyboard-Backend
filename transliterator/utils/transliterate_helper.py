@@ -7,11 +7,10 @@ from django.db.models import Q
 from ..models import UserDict
 
 from .nixacernis_keyboard import translate
-from .pinyin import pinyin_is_valid
 
 
 # IN: A list of keys.
-#   eg, [5, 16, 1, 8]
+#   eg, (5, 16, 1, 8)
 # OUT: A list of candidate words.
 #   eg, ['你好','日抛','你','日','匿','泥']
 #
@@ -35,7 +34,7 @@ def transliterate(keys):
 # IN: A list of possible pinyins.
 #   eg, [['ri','ni'], ['hao','pao']]
 # OUT: A list of candidate words.
-#   eg, ['你好','日抛','你','日','匿','泥']
+#   eg, ['你好','日抛']
 def query(possible_pinyin_list):
     Q_objects = [Q(pinyin=",".join(py_list))
                  for py_list in product(*possible_pinyin_list)]

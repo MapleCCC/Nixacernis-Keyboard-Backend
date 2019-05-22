@@ -1,9 +1,9 @@
 # limit exported objects to only the two dicts, for better information hiding and inter-module decoupling.
 __all__ = ['number_of_key', 'translate']
 
+from itertools import product
 from bidict import bidict
 from .pinyin import pinyin_is_valid
-from itertools import product
 
 # Use tuple instead of list, for immutability.
 # Otherwise the bidict constructor won't accept.
@@ -25,6 +25,7 @@ key_finals_bidict = bidict(key_finals_dict)
 initials_key_dict = key_initials_bidict.inverse
 finals_key_dict = key_finals_bidict.inverse
 
+# "5,16" yields ['ri', 'ni']
 translation_lookup_table = {}
 for i in range(18):
     for j in range(18):
@@ -45,7 +46,7 @@ def translate(key_list):
     if len(key_list) == 0:
         return []
     if len(key_list) == 1:
-        # raise ValueError()
+        # raise ValueError("Input is invalid.")
         return []
 
     key_for_initial = key_list[0]

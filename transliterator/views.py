@@ -31,7 +31,7 @@ def detail(request, chinese_word):
 # IN: request object and a string representing raw_key_list
 #   raw_key_list = "6-17-2-9-18-2"
 # OUT: HTTPResponse object containing the candidate word list
-#   candidate_word_list = "你好吗,你号码,你好,日抛,你,日,匿,泥,腻,迡,逆"
+#   "你好吗,你号码,你好,日抛,你,日,匿,泥,腻,迡,逆"
 def transliterate_request_handler(request, raw_key_list, offset=0):
     if raw_key_list == '':
         return HttpResponse('')
