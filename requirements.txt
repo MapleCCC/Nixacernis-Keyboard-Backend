@@ -1,6 +1,6 @@
 # For setup
 bidict==0.18.0
-Django==2.2
+Django==2.2.5
 gunicorn
 django_heroku
 
